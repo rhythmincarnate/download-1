@@ -1,0 +1,431 @@
+							linux基础
+unix--->1972~1973
+c(面向过程)----->1973
+linux---->1990
+	ubuntu
+	redhat--->centos
+
+linux一切皆文件
+	io
+	
+文件管理
+	linux终端:
+		cmd [options] [arguments]
+		cmd:功能
+		options:
+			附加要求
+			-
+			--
+		arguments:
+			作用对象
+			文件(路径)
+		man 1 cmd
+		Tab补齐
+		上下方向键－－－》翻看历史命令
+	基本操作	
+		1.ls
+			options:
+				-l
+				-i	inode
+				-d
+				-h
+				-a
+		2.cd / pwd
+			路径:
+				绝对路径
+					从/开始
+				相对路径
+					相对于当前
+				. 当前
+				..上一级
+		3.
+			创建
+				regular file:touch [filename]
+				文件不存在创建新文件，文件存在则更新文件的时间
+				directory file: mkdir [dirname]
+					option:
+						-p　创建的多个目录间有层级关系
+			复制
+				cp srcpath destpath
+					option:
+						-r	目录
+			剪切
+				mv srcpath	destpath
+			删除
+				rm [file/dir]
+					option:
+						-r dir
+			查看
+				cat
+				more
+				less
+					搜索
+						/key
+						?key
+				head
+				tail
+					options:
+						-f　实时查看文件末尾的变化
+			统计文件内容
+				wc [options] [file]
+					options:
+						-l   line
+						-w	 word
+						-c	 charactor
+			过滤文件内容
+				grep [options] [file]
+					options:
+						-i	忽略大小写
+						-w	精确查找
+						-n	显示行号
+						-v	反向
+
+		4.
+			cal [month] [year]
+			date 
+				date +"%y-%m-%d %H:%M:%S
+			history
+				查看历史命令
+
+	文件属性
+		ls -l / stat [file]
+		-rw-r--r-- 1 zhangzongyan zhangzongyan   73 12月 18 12:03 passwd
+		1.文件类型
+			七种
+				普通文件		-/f
+				目录文件		d
+				链接文件		l
+				管道文件		p
+				套接字文件	s
+				块设备文件	b
+				字符设备文件	c
+		2.文件权限
+			对于文件所有的用户分三类:
+				拥有者:默认就是文件的创造者    前三位
+				所属组					　  中间三位
+				其他用户					   后三位
+				r --->read
+				w --->write
+				x --->excute
+				目录:
+					r	ls
+					w	touch / mkdir
+					x	cd
+				权限的修改
+					chmod g-x file
+					chmod u+w file
+					chmod o+x file
+					chmod a+w file (u+w, g+w, o+w)
+					chmod u=r file
+				八进制数修改文件权限
+					rwx rw- r-x	
+					111 110 101
+					7   6   5
+					chmod 765 filepath
+				文件屏蔽字				
+					umask
+					mode & (~umask)
+				文件特殊权限
+					u+s		set uid
+						可执行文件，执行文件期间拥有文件拥有者身份
+					g+s		set gid
+					o+t		set sticky
+						作用于目录，如果文件的权限是rwxrwxrwt,那么所有
+						用户对此文件只能修改和删除自己创建的文件
+					chmod 4764 file
+					
+				文件权限　12位
+					(u+s g+s o+t) (u+r u+w u+x) (g+r g+w g+x) (o+r o+w o+x)
+
+		3.硬链接/符号链接
+			硬:	-
+				ln srcpath destpath
+				硬链接文件只是相对于源文件多了一个文件名,磁盘中只存储一份
+				硬链接文件与源文件inode相同
+				不能跨分区
+				不能给目录创建硬链接
+				rm　删除硬链接
+			软/符号: l
+				ln -s srcpath destpath
+				类似于快捷方式
+				inode != 源文件inode
+				可用户目录
+				可跨分区
+
+
+		4.文件拥有者　/　所属组
+			用户管理
+				多用户　多任务
+				root --->超级用户
+				man 5 /etc/passwd------>用户的信息(uid gid home bash)
+				创建
+					sudo useradd / adduser uplooking
+				密码
+					sudo passwd uplooking
+				删除用户
+					sudo userdel -r [username]
+				切换用户
+					su - [username]
+				退出登录
+					exit
+				新创建的用户如何允许sudo
+					在/etc/sudoers文件中添加一行
+					username ALL=(ALL) ALL
+				查看登录用户
+					whoami
+				查看登录用户信息
+					id [uesername]
+				创建组:
+					sudo groupadd [groupname]
+					宿组:创建用户的时候默认的同名组
+					附加组:可以多个
+				将用户加入组内
+					sudo gpasswd -a [username] [groupname]
+				将用户从组内移除
+					sudo gpasswd -d [username] [groupname]
+				改变文件的拥有者和所属组
+					chown username:groupname file
+
+		5.文件字节个数 != 文件所占用的磁盘空间
+			stat [filepath]
+				块 == 512bytes (磁盘空间大小)
+		6.文件的时间
+			access time		最后一次访问
+			change time		最后一次文件属性修改时间
+			modify time		最后一次文件内容改变时间  ls -l
+
+	文件查找
+		查找可执行文件
+			which / whereis
+			which cmd　找不到的就是内部命令(不是独立存在的执行文件)
+		locate [filename]
+			遍历数据库
+			优点：速度快
+			缺点:不够实时		
+			手动更新数据库:updatedb
+		find path way(options) key
+			磁盘
+			options:
+				-name
+					find /etc -name "passwd"
+					"xxx*" *所有
+					"xxx?"	通配一个字符
+				-size
+					find /etc -size -1M
+					b--->block(512bytes)
+					c--->byte
+					k / M / G
+				-type
+					find /usr -type f/b/s/p/l/c/d
+				在/etc目录下找一个文件，文件的类型是目录，文件的大小大于100c
+					find /etc -type d -a -size +100c
+				在/srv目录下找到一个叫做"hi"文件 并将这个文件重命名为"hello"
+					find /srv -name "hi" -ok mv {} hello \;
+					-ok对要做的动作询问
+					-exec直接执行
+				
+			练习:
+				1.找到/boot文件中大于512字节的所有文件
+				2.找到/usr 目录下的"kernel.h" "stdint.h"
+				3.找到/tmp目录下test文件
+
+	文件打包/压缩
+		tar [options] [xxx.tar] [file1...] [dir2...]
+			options:
+				-c 创建
+				-v　过程可视
+				-f 后包名	
+				-t 查看包内容
+				-r 向包中追加/替换新文件
+				-x 解包/解压
+				-j　bz2格式的压缩
+				-z gz格式压缩
+				-J xz格式压缩
+		练习:
+			1.将/tmp下的所有的文件打包压缩成gz格式的压缩包，压缩包在当前工作路径
+			将家目录下的音乐目录追加到压缩包中
+		压缩文件:
+			gzip file1 / gunzip xxx
+			bzip2 file1 / bunzip2 xxx
+			xz file / unxz xxx
+
+	文件
+		当用户登录成功后，已打开三个文件，之后所有的进程默认打开了此三个文件
+			标准输入			0		stdin		行缓存
+			标准输出			1		stdout		行缓存
+			标准错误输出		2		stderr		无缓存
+		重定向
+			0< 或者 <
+			1> 或   >
+			2>
+		管道符
+			输出|读入
+
+软件包管理
+	1.xxx.deb
+		sudo dpkg [options] xxxx.deb
+				options:
+					-i	install
+					-r  remove
+					-P	purge
+	2.源码包
+		xxx.tar.bz2 / xx.tar.gz
+		tar -xvf xxx.tar.xx
+		INSTALL/README
+			<1>./configure
+			<2>make
+			<3>sudo make install
+	3.xxx.bin	/ 	xxx.run
+		chmod u+x xxx.bin
+		./xxx.bin
+	4.xxx.rpm
+		<1>sudo apt install alien
+			alien是一个转换工具,可以将rpm包转换成deb包
+		<2>alien -d xxx.rpm
+
+	5.apt --->　软件包来自于源 在线 (推荐)
+		sudo apt install wireshark	--->安装
+		sudo apt remove xxxx	--->移除
+		sudo apt -f install	---->修复
+		sudo apt update		---->更新源(查看是否可以更新)
+		sudo apt upgrade	---->更新所有已安装的软件包	
+		sudo apt show wireshark --->查看软件包信息	
+
+进程/网络管理及常用服务
+	进程：运行的程序
+	top
+	ps --->打印进程运行状态
+	ps aux	---> USER PID STAT TTY
+	ps axj  ---> PPID PID PGID SID STAT TTY
+	ps axf
+
+	kill -signum pid
+	给进程号为pid的进程发送signum信号(2,3,9默认终止一个进程)
+	
+	网络
+		ifconfig 查看ip
+		/etc/init.d/ufw stop/start/restart/status防火墙关闭/开启/重启/查状态
+		ping ip
+	
+	常用服务
+		ftp
+			共享:
+			sudo apt install lftp
+			sudo apt install vsftpd
+			修改配置文件	/etc/vsftpd.conf
+				anonymous_enable=YES	允许下载
+				anon_upload_enable=YES	运行上传
+			/etc/init.d/vsftpd restart	重启服务
+			访问共享目录
+				sudo apt install lftp
+				lftp 172.25.1.174
+					cd 切换工作路径
+					lcd ~ 切换下载路径
+					get file 下载文件
+					mirror dir　下载目录
+					put file 上传文件
+					mirror -R dir 上传目录
+		wget	
+			wget ftp://172.25.1.174:/download/
+
+		nfs
+			mount -t nfs/fat32 srcpath destpath 挂载
+			umount destpath
+			使用nfs共享文件 以下步骤
+			<1>安装nfs服务
+				sudo apt install nfs-kernel-server
+			<2>将共享目录添加到配置文件　"/etc/exports"
+			/srv/ftp/download *(ro,sync,no_root_squash)
+			将要共享的文件路径/srv/ftp/download 添加
+			<3>重启服务
+			/etc/init.d/nfs-kernel-server restart
+			<4>查看共享目录
+				showmount -e 172.25.1.174
+			<5>挂载
+				sudo mount -t nfs 172.25.1.174:/srv/ftp/download /mnt
+
+磁盘管理
+	查看目录所占用的磁盘空间大小	
+		du -sh dirpath 
+	查看磁盘分区	
+		df -h
+	分区
+		fdisk -l
+	关机		
+		halt
+		init 0
+		poweroff
+		shutdown -h now
+	重启
+		reboot
+		init 6
+		shutdown -r now
+	查看系统版本		
+		sudo lsb_release -a
+	查看内核版本
+		sudo uname -r
+
+vim使用 ----> 编辑器
+	安装 sudo apt install vim
+	插件	bundle
+	vim　三种模式
+		一般模式	
+			默认
+			vim text
+			切换到插入模式:
+				i	前
+				I	行首
+				a	后
+				A	行末
+				o	下一行
+				O	上一行
+				s	删除字符并插入
+				S	删除行并插入
+		
+			快捷操作
+				yy　/ 3yy	复制　/ 复制3行
+				p			粘贴
+				dd / 3dd	剪切 / 剪切3行
+				u			撤销
+				x/del		删一个字符
+				gg			首行
+				G / 10G		末行 / 10行
+				0			行首
+				$			行末
+				r			替换一个
+				R			进入替换模式
+				Ctrl+r		还原
+				ctrl+v-->进入可视块模式
+					对齐	=
+					在可视块前插入　shift+i--->输入--->按Esc Esc
+
+		插入(编辑)模式	
+			插入--->Esc/Ctrl+c--->进入一般模式					
+		命令行模式	
+			一般--->:--->进入命令行模式
+			:w	保存
+			:q	退出
+			:wq
+			:x	保存退出
+			:X	密码
+			:a	所有
+			:vsp newfile 垂直分屏
+			:sp	newfile	　水平分屏
+			替换
+				将文件中所有的root替换为uplooking
+				:%s/root/uplooking/g
+				将文件的前10行的root替换为uplooking
+				:1,10s/root/uplooking/g
+				将文件从10行开始到最后所有出现的root替换为uplooking
+				:10,$s/root/uplooking/g
+		
+		多页显示多个文件
+				vim -p a.c b.c 			
+			
+	
+	
+
+
+
+
+
