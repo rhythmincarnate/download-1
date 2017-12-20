@@ -31,6 +31,14 @@ git
 	<1>github 申请账号	
 	<2>创建远程仓库
 		1). 已有本地仓库---->如何与远程仓库创建联系
+			先在github创建仓库
+			在本地生成公钥
+				ssh-keygon
+				在.ssh目录xxx.pub文件复制
+			进入本地仓库
+				git init
+				git remote add orogin git@github.com:zhangzongyan/download.git(远程仓库地址)		
+
 		2).　只有远程仓库---->同步本地仓库
 	
 分支/合并
