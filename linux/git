@@ -39,7 +39,8 @@ git
 				git init
 				git remote add orogin git@github.com:zhangzongyan/download.git(远程仓库地址)		
 
-		2).　只有远程仓库---->同步本地仓库
+		2).只有远程仓库---->同步本地仓库
+			git clone git@github.com:zhangzongyan/download.git(远程仓库地址)
 	
 分支/合并
 
