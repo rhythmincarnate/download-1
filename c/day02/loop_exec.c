@@ -21,3 +21,104 @@
 	8.从标准输入读入一个整型数,判断其是否是质数.
 #endif
 
+#include <stdio.h>
+
+int main(void)
+{
+#if 0
+	//1
+	int number, sum = 0;
+
+	printf("input a number\n");
+	scanf("%d", &number);
+
+	for (int i = 1; i <= number; i++) {
+		sum = i + sum;//sum += i;	
+	}
+	printf("%d的前ｎ项和为%d\n", number, sum);
+#endif
+
+#if 0
+	int num1, num2;
+	int sum = 0;
+
+	printf("input two numbers:\n");			
+	scanf("%d%d", &num1, &num2);
+
+	//确保num1存储的是两个数中较小的
+	if (num1 > num2) {
+		num1 = num1 ^ num2;
+		num2 = num1 ^ num2;
+		num1 = num1 ^ num2;
+	}
+
+	for (; num1 <= num2; num1 ++) {
+		sum += num1;
+	}
+
+	printf("%d\n", sum);
+#endif
+
+#if 0
+	int card, save;
+	int n = 0;
+
+	do {
+		//确保card一定是一个四位数
+		printf("请输入您的会员卡号的后四位: ");
+		scanf("%d", &card);
+		save = card;
+		n = 0;
+		while (card > 0) {
+			n ++;
+			card /= 10;
+		}
+	} while (n != 4);
+
+	//save每一位的和是否大于50	
+	/*
+	 	%10--->得到最低位
+		/10--->舍掉最低位
+	 */		
+
+	n = 0;	
+	while (save > 0) {
+		n += save % 10;			
+		save /= 10;
+	}
+	if (n > 20) {
+		printf("恭喜您！获得５０元代金券\n");
+	}
+#endif
+
+	int number, s;
+	int n = 0;
+	int res = 0;
+
+	do {
+		printf("请输入一个三位数: ");
+		scanf("%d", &number);
+		s = number;
+		n = 0;
+		while (s > 0) {
+			n ++;
+			s /= 10;
+		}
+	} while (n != 3);
+
+	s = number;
+	for (; number > 0; number /= 10) {
+		n = number % 10;	
+		res += n * n * n;
+	}
+	
+	if (res == s) {
+		printf("%d 是一个水仙花数\n", s);
+	} else {
+		printf("%d 不是一个水仙花数\n", s);
+	}
+
+	return 0;
+}
+
+
