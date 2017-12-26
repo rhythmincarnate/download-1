@@ -24,6 +24,8 @@
 		n =	tmp;\
 	}while(0)
 
+#define SECONDYEAR	365*24*60*60UL
+
 int main(void)
 {
 #if 0
