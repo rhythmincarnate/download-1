@@ -20,6 +20,7 @@ return value:
  */
 int daysofmonth(int month, int year)
 {
+#if 0
 	int day;
 
 	switch (month) {
@@ -38,6 +39,12 @@ int daysofmonth(int month, int year)
 	}
 
 	return day;
+#endif
+	int days[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+	arr[2] += isleap(year);
+
+	return days[month];
 }
 
 /*
