@@ -63,7 +63,7 @@ int main(void)
 
 	//字符串的比较
 	strcpy(str1, "hello");
-	strcpy(str2, "hell");
+	strcpy(str2, "hellab");
 	printf("%d\n", strcmp(str1, str2));
 
 	return 0;
