@@ -1,0 +1,12 @@
+
+请描述出一下每条语句的变量a分别是什么类型
+int a;
+int *a;
+int a[3];
+int *a[3];
+int (*a)[3];
+int (*a)(int, char *);
+char *a(int, float);
+void (*a[3])(int);
+void (*a(int num, void (*p)(int)))(int);
+

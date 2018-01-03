@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-void sort_array(void *arr, int nmemb, int size, int (*cmp)(const void *, const void *));
+typedef void (*cmp_t)(const void *, const void *);
+
+//void sort_array(void *arr, int nmemb, int size, int (*cmp)(const void *, const void *));
+void sort_array(void *arr, int nmemb, int size, cmp_t cmp);
 static int cmp_int(const void *data1, const void *data2)
 {
 	const int *d1 = data1;
