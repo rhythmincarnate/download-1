@@ -1,0 +1,72 @@
+
+数据结构
+	集合	线性结构	树形结构	图形结构
+
+线性结构
+	元素和元素之间存在一对一关系	
+	存储方式
+		连续(顺序)存储
+			顺序表(数组)
+			动态库/静态库
+				已编译的二进制文件
+				动态 / 共享
+					.so
+					执行阶段动态加载所调用的库中的函数
+					时间换空间
+					制作步骤:
+						1.gcc -fPIC -shared -o libxxx.so list.c list2.c
+						2.gcc -o a.out main.c -L. -lxxx
+						-L库路径
+						-l库名(不包含.so 和lib)
+						3.ldd a.out
+							查看可执行文件所链接的所有动态库是否分配地址
+						4.如果没有
+						可通过一下两种方式任选其一解决
+							临时的
+							<1>[xxx@localhost]# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
+
+							<2>永久的　则需要将动态库所在的路径加入配置文件
+							sudo vim /etc/ld.so.conf
+							sudo ldconfig 重新加载动态库配置文件
+				静态	
+					.a
+					编译阶段将静态库编译到可执行文件中
+					空间换时间
+					制作步骤:
+						1.gcc -c list.c	-o list.o
+						2.ar -cr libstaticlist.a list.o
+						3.gcc -o a.out main.c -lstaticlist -L.
+
+
+		链式存储
+			单链表
+			双链表
+			循环链表
+			内核链表
+	特殊的线性结构
+		栈
+		队列
+
+	小项目
+		计算器
+	多文件管理----makefile
+	库的封装
+		动态库
+		静态库
+
+树形结构
+	元素和元素之间存在一对多关系	
+	树的遍历
+	二叉树
+	平衡二叉排序树
+
+哈希算法
+
+
+基本操作
+	增删改查
+
+
+
+
+
