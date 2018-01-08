@@ -36,8 +36,6 @@
 						1.gcc -c list.c	-o list.o
 						2.ar -cr libstaticlist.a list.o
 						3.gcc -o a.out main.c -lstaticlist -L.
-
-
 		链式存储
 			单链表
 			双链表

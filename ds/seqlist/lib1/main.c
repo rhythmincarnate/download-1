@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "list.h"
+#include <list.h>
 
 static void print1(const void *data)
 {
