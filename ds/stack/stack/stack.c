@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <stack.h>
 
@@ -29,7 +30,7 @@ int isempty(const stack_t *s)
 
 int isfull(const stack_t *s)
 {
-	int nmemb;
+	int nmemb = 0;
 
 	nmemb = ((char *)s->top - (char *)s->bottom) / s->size;
 	return nmemb == s->container;

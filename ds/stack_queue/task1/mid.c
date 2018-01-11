@@ -5,14 +5,20 @@
 #include <stack.h>
 
 static char *mid2pre(const char *ptr);
+static int resultofpre(const char *pre, int *res);
 int main(int argc, char **argv)
 {
 	char *r;
+	int res;
 	if (argc < 2)
 		return 1;
 	r = mid2pre(argv[1]);
-	if (r != NULL)
+	if (r != NULL) {
 		printf("%s\n", r);
+		if (resultofpre(r, &res) == 0) {
+			printf("res:%d\n", res);	
+		}
+	}
 
 	free(r);
 
@@ -153,6 +159,73 @@ static int getvalue(char op)
 
 	return res;
 }
+
+static int caculate2num(int a, int b, char ch)
+{
+	int res;
+	switch (ch) {
+		case '+':
+			res = a + b;
+			break;
+		case '-':
+			res = a - b;
+			break;
+		case '*':
+			res = a * b;
+			break;
+		case '/':
+			res = a / b;
+			break;
+		default:
+			break;
+	}
+
+	return res;
+}
+
+/*
+ 根据前缀表达式，计算出其预算结果
+ */
+static int resultofpre(const char *pre, int *res)
+{
+	stack_t *s;
+	int i;
+	int l, r, n;
+	int tmp;
+
+	s = init(sizeof(int), strlen(pre));
+
+	i = strlen(pre)-1;
+	while (i >= 0) {
+		if (isNumber(pre[i])) {
+			tmp = pre[i] - '0';
+			push(s, &tmp);
+		} else if (isOperator(pre[i])) {
+			if (pop(s, &l) < 0)
+				goto ERROR;
+			if (pop(s, &r) < 0)
+				goto ERROR;
+			n = caculate2num(l, r, pre[i]);		
+			push(s, &n);
+		} else 
+			goto ERROR;
+		i--;	
+	}
+	pop(s, res);	
+	if (!isempty(s))
+		goto ERROR;
+
+	destory(s);
+
+	return 0;
+ERROR:
+	destory(s);	
+	return -1;
+}
+
+
+
+
 
 
 
