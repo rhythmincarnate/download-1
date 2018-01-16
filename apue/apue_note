@@ -1,0 +1,87 @@
+
+		apue
+	
+第一部分	io
+	3  5  4  6
+
+第二部分	并发
+	多进程+信号
+		7 8 9 13 10 15	
+	多线程	
+		11 12
+
+第三部分	网络编程
+		14 16
+
+
+第三章　文件io(系统io)
+	1.打开　读/写　定位  关闭
+		open(2)	
+			位图:用一个整型数值的每一位表达一个状态		
+			文件描述符:非负整型数
+				默认0~1023,当前可用最小的	
+				用于标识打开的文件	
+
+			errno全局变量 绝大多数的系统调用函数出错的时候，会设置errno值
+			如果手册有说明确实设置了，那么可以使用
+				perror(3)打印错误信息
+			errno取值(0~133)不同的值对应不同的错误原因
+
+			int open(const char *pathname, int flags, mode_t mode);
+			flags(位图):
+				O_RDONLY / O_WRONLY / O_RDWR 三者必选其一
+				可选:　|
+					O_CREAT:如果文件不存在则创建,给定mode,最终文件的权限
+							mode & (~umask)
+					O_TRUNC
+							如果文件存在　内容截断为0
+					O_APPEND
+							追加					
+		read(2)
+		write(2)
+		lseek(2)
+		  改变文件表项中的offset
+		close(2)
+	2.文件共享
+		重点是三张表结构的关系	
+		  	进程表项　
+		  	文件表项
+		  	i结点表项
+
+	3.原子操作
+		当代码中某段会发生竞争关系,要求原子操作(并发)	
+		如果完成的某个目标需要多条语句完成，此操作不原子
+			close() + dup()
+			open()--->失败---->creat()
+		原子
+			open(, O_CREAT)
+			dup2();
+		
+	4.
+		dup(2)/dup2(2)
+			以下两条是否有区别
+				./a.out > outfile 2>&1
+					outfile---->fd
+					dup2(fd, 1);
+					dup2(1, 2);
+
+				./a.out 2>&1 > outfile
+					dup2(1, 2);
+					dup2(fd, 1);
+					
+
+		fcntl(2);
+		ioctl(2);
+
+作业:
+	1.将argv[1]对应的文件,复制到当前路径下"./hw",
+	定义一个函数将"./hw"文件的第二行删除　结果写入argv[2]
+
+	2.实现mycat,写1号文件描述符
+	./mycat "/etc/passwd" > "newfile"
+
+
+第五章  标准io
+
+
+
