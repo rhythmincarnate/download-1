@@ -68,9 +68,19 @@
 				./a.out 2>&1 > outfile
 					dup2(1, 2);
 					dup2(fd, 1);
-					
 
-		fcntl(2);
+		fcntl(2):
+			<1>Duplicating a file descriptor
+				以下两个文件描述符的复制有区别吗
+					fcntl(fd, F_DUPFD, 1);		
+					dup2(fd, 1);
+			<2>File descriptor flags
+		 	<3>File status flags		
+				以下状态不能改变
+				O_CREAT,  O_EXCL, O_NOCTTY, O_TRUNC 
+				O_RDONLY, O_WRONLY, O_RDWR
+			<4>locking
+
 		ioctl(2);
 
 作业:
@@ -82,6 +92,71 @@
 
 
 第五章  标准io
+	跨平台
+	带缓存区的
+		当文件打开成功,缓存去就存在了
+
+	1.文件流
+		FILE:结构体类型
+			主要<1>fd
+				<2>buf
+				<3>bufsize
+				<4>errmsg
+			
+		stdin stdout stderr
+
+		缓存区:
+			行缓存	stdin stdout	
+			全缓存
+			无缓存	stderr
+		缓存区刷新:
+			1.缓存区已满	
+			2.行缓存文件读到'\n'	
+			3.fclose(3);
+			4.fflush(3) (output streams)
+			5.进程的正常终止方式中的某些情况
+
+	2.
+		fopen(3);
+
+		字节
+			getchar(3)/putchar(3);
+			fgetc(3)/fputc(3);
+			fgetc(stdin) ==>getchar()
+			fputc(ch, stdout) ==> putchar(ch)
+
+			feof(3) / ferror(3) --->FILE(errmsg)
+
+		行
+			gets(3) / puts(3);
+			fgets(3) / fputs(3);
+			getline(3);
+		结构
+			fread(3) / fwrite(3);
+			fread(void *buf, int size, int nmemb, FILE *fp);
+			size:每个成员所占字节个数 一般写1
+			nmemb:最多读多少个成员
+
+		格式化
+			scanf(3)/ printf(3) 
+			fscanf(3) / fprintf(3)
+
+		fseek(3);
+		ftell(3);
+		rewind(3);
+
+		fclose(3);	
+	
+	3.临时文件
+
+	4.比较sysio/stdio
+
+	作业:
+		1.实现getline(3);
+		2.将argv[1]文件的第argv[2]行行首插入argv[3]
+		./a.out test 5 "class is over"
+		3.比较argv[1]和argv[2]文件的相应行
+		输出argv[1]与argv[2]不同的那一行
 
 
 
