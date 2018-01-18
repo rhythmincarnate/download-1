@@ -1,5 +1,4 @@
-
-		apue
+			apue
 	
 第一部分	io
 	3  5  4  6
@@ -148,15 +147,89 @@
 		fclose(3);	
 	
 	3.临时文件
+		tmpfile(3);		
 
 	4.比较sysio/stdio
+		标准io的缓存机制就是为了减少系统调用(用户态向内核态切换次数)
+	在linux操作系统:
+		两种io都支持
+		stdio--->libc库
 
+		stdio							sysio
+		FILE *							int fd
+
+		fopen(3)						open(2)
+
+	    fgetc(3)/fputc(3)
+		fgets(3)/fputs(3)
+		fread(3)/fwrite(3)				read(2) / write(2)
+		fscanf(3)/fprintf(3)
+
+		fseek(3)/ftell(3)/rewind(3)	    lseek(2)
+		fclose(3)						close(2)
+
+		fileno(3);
+			根据FILE *获取文件描述符
+		fdopen(3)	
+			根据文件描述符获取FILE *
+
+	
 	作业:
 		1.实现getline(3);
 		2.将argv[1]文件的第argv[2]行行首插入argv[3]
 		./a.out test 5 "class is over"
 		3.比较argv[1]和argv[2]文件的相应行
-		输出argv[1]与argv[2]不同的那一行
+		输出argv[1]与argv[2]不同的那几行
 
 
+第四章 文件属性和目录
+1.stat(2)
+	-rw-rw-r-- 1 zhangzongyan zhangzongyan  817 1月  18 14:21 stat.c
+	<1>文件类型
+		regular
+		directory
+		socket
+		block
+		charactor
+		symbol link
+		pipe
+		
+	<2>权限
+		user  group   other
+		rwx
+		u+s
+		g+s
+		o+t
+		
+	<3>硬链接	
+		硬链接文件:
+			在目录项中多了一条记录
+			目录有硬链接，例如. ..
+			不允许用户创建目录的硬链接
+		符号链接:
+			快捷方式
+			存源文件路径
+
+	<4>拥有者
+		"/etc/passwd"
+			读此配置文件
+				getpwnam(3)
+				getpwuid(3)
+	<5>所属组
+		"/etc/group"
+			getgrnam(3);
+			getgrgid(3);
+
+	<6>字节个数
+		字节个数(st_size) != 磁盘空间(st_blocks)
+		st_blocks == 512byte
+
+	<7>时间
+		st_mtim---->struct timespec --->tv_sec(time_t)		
+		--->localtime(3) struct tm--->strftime(3)
+
+
+2.读目录
+
+3.时间例程
 
