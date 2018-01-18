@@ -184,6 +184,8 @@
 
 第四章 文件属性和目录
 1.stat(2)
+	fstat(2);
+	lstat(2);
 	-rw-rw-r-- 1 zhangzongyan zhangzongyan  817 1月  18 14:21 stat.c
 	<1>文件类型
 		regular
@@ -225,11 +227,16 @@
 		st_blocks == 512byte
 
 	<7>时间
+	时间例程
 		st_mtim---->struct timespec --->tv_sec(time_t)		
 		--->localtime(3) struct tm--->strftime(3)
 
+	作业ls -l	
 
 2.读目录
 
-3.时间例程
+getopt(3);
+
+3.密码校验过程
+	//哈希
 

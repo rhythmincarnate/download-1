@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 	//拥有者(/etc/passwd)　所属组
 	//printf(" %d %d ", res.st_uid, res.st_gid);
 	struct passwd *pwd = getpwuid(res.st_uid);
+	//if error
 	printf(" %s ", pwd->pw_name);
 	struct group *grp = getgrgid(res.st_gid);
 	printf(" %s ", grp->gr_name);
@@ -65,6 +66,7 @@ int main(int argc, char **argv)
 	struct tm *tmp = NULL;
 	char buf[128] = {};
 	tmp = localtime(&(res.st_mtim.tv_sec));
+	//if error
 	strftime(buf, 128, "%m月 %d %H:%M", tmp);
 	printf(" %s ", buf);
 
