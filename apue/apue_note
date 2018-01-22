@@ -234,9 +234,39 @@
 	作业ls -l	
 
 2.读目录
+	opendir(3);
+	readdir(3);	
+	closedir(3);
+
+	glob(3);
+		用途:
+			读目录	
+			存字符串	flag : GLOB_NOCHECK
+			将多次调用glob(3)得到的结果存储到同一个glob_t的成员变量中, flag: GLOB_APPEND
+	练习:
+		du 命令	
 
 getopt(3);
+	加参
+	./a.out -l -a hello -h 
+	optring:
+		"-la:h::"
+		-a 后一定要有参数 optarg存储参数的地址
+		-h 后的参数可选择 optarg == NULL 没有　　否则有参数，参数的地址optarg
+		-开头　getopt(可识别非选项参数)	 返回1
+		结束返回-1
+		如果有optstring中不包含的选项，则返回'?'
+
 
 3.密码校验过程
 	//哈希
+	crypt(3); ---->加密
+	getpass(3); ---->读密码
+	getspname(3); ---->获取用户密码
+
+
+	username: zzy
+	passwd: 123
+
+	123---->crypt()加密---->比较username真正密码(/etc/shadow)
 
